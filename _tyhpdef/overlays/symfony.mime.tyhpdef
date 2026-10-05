@@ -111,7 +111,8 @@ namespace Symfony\Component\Mime {
 
 namespace Symfony\Component\Mime\Crypto {
     /**
-     * Harvest miss: `@internal` base omitted from Layer 1; SMimeEncrypter / SMimeSigner extend it.
+     * Harvest miss: `@internal` base omitted from Layer 1.
+     * Public subclasses extend it, so the harvest cascade-omitted them too.
      */
     abstract class SMime {
         protected function convertMessageToSMimePart(mixed $stream, string $type, string $subtype): \Symfony\Component\Mime\Part\SMimePart;
@@ -122,24 +123,32 @@ namespace Symfony\Component\Mime\Crypto {
     }
 
     /**
-     * Overlay: PHPDoc shapes harvest left loose on `SMimeEncrypter`.
+     * Harvest miss: extends omitted `@internal` `SMime`.
      */
-    // @overlay-against: class SMimeEncrypter extends \Symfony\Component\Mime\Crypto\SMime
-    partial class SMimeEncrypter {
+    final class SMimeEncrypter extends \Symfony\Component\Mime\Crypto\SMime {
         /**
-         * @param string|array<string> $certificate
+         * @param string|array<int|string, string> $certificate The path (or array of paths) of the file(s) containing the X.509 certificate(s)
+         * @param ?int $cipher A set of algorithms used to encrypt the message. Must be one of these PHP constants: https://php.net/openssl.ciphers
          */
-        // @overlay-against: function __construct(string|array $certificate, ?int $cipher): void
-        public function __construct(string|array<string> $certificate, ?int $cipher = null): void;
-    }
-}
+        public function __construct(string|array<int|string, string> $certificate, ?int $cipher = null): void;
 
-namespace Symfony\Component\Mime\DependencyInjection {
+        public function encrypt(\Symfony\Component\Mime\Message $message): \Symfony\Component\Mime\Message;
+    }
+
     /**
-     * Omit: compiler pass implements the optional `symfony/dependency-injection` peer.
+     * Harvest miss: extends omitted `@internal` `SMime`.
      */
-    // @overlay-against: class AddMimeTypeGuesserPass implements \Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface
-    omit class AddMimeTypeGuesserPass {
+    final class SMimeSigner extends \Symfony\Component\Mime\Crypto\SMime {
+        /**
+         * @param string $certificate The path of the file containing the signing certificate (in PEM format)
+         * @param string $privateKey The path of the file containing the private key (in PEM format)
+         * @param ?string $privateKeyPassphrase A passphrase of the private key (if any)
+         * @param ?string $extraCerts The path of the file containing intermediate certificates (in PEM format) needed by the signing certificate
+         * @param ?int $signOptions Bitwise operator options for openssl_pkcs7_sign() (@see https://secure.php.net/manual/en/openssl.pkcs7.flags.php)
+         */
+        public function __construct(string $certificate, string $privateKey, ?string $privateKeyPassphrase = null, ?string $extraCerts = null, ?int $signOptions = null): void;
+
+        public function sign(\Symfony\Component\Mime\Message $message): \Symfony\Component\Mime\Message;
     }
 }
 
@@ -149,6 +158,36 @@ namespace Symfony\Component\Mime\HtmlToTextConverter {
      */
     // @overlay-against: class LeagueHtmlToMarkdownConverter implements \Symfony\Component\Mime\HtmlToTextConverter\HtmlToTextConverterInterface
     omit class LeagueHtmlToMarkdownConverter {
+    }
+}
+
+namespace Symfony\Component\Mime\Test\Constraint {
+    // @overlay-against: class EmailAddressContains extends \PHPUnit\Framework\Constraint\Constraint
+    omit final class EmailAddressContains {
+    }
+
+    // @overlay-against: class EmailAttachmentCount extends \PHPUnit\Framework\Constraint\Constraint
+    omit final class EmailAttachmentCount {
+    }
+
+    // @overlay-against: class EmailHasHeader extends \PHPUnit\Framework\Constraint\Constraint
+    omit final class EmailHasHeader {
+    }
+
+    // @overlay-against: class EmailHeaderSame extends \PHPUnit\Framework\Constraint\Constraint
+    omit final class EmailHeaderSame {
+    }
+
+    // @overlay-against: class EmailHtmlBodyContains extends \PHPUnit\Framework\Constraint\Constraint
+    omit final class EmailHtmlBodyContains {
+    }
+
+    // @overlay-against: class EmailSubjectContains extends \PHPUnit\Framework\Constraint\Constraint
+    omit final class EmailSubjectContains {
+    }
+
+    // @overlay-against: class EmailTextBodyContains extends \PHPUnit\Framework\Constraint\Constraint
+    omit final class EmailTextBodyContains {
     }
 }
 

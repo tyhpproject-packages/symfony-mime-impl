@@ -501,46 +501,8 @@ namespace Symfony\Component\Mime\Crypto {
         public function __construct(string $pk, string $domainName, string $selector, array $defaultOptions = [], string $passphrase = ''): void;
         public function sign(\Symfony\Component\Mime\Message $message, array $options = []): \Symfony\Component\Mime\Message;
     }
-    /**
-    * @author Sebastiaan Stok <s.stok@rollerscapes.net>
-    * @generated
-    */
-    final class SMimeEncrypter extends \Symfony\Component\Mime\Crypto\SMime {
-        /**
-        * @param string|array $certificate The path (or array of paths) of the file(s) containing the X.509 certificate(s)
-        * @param ?int $cipher A set of algorithms used to encrypt the message. Must be one of these PHP constants: https://php.net/openssl.ciphers
-        * @generated
-        */
-        public function __construct(string|array $certificate, ?int $cipher = null): void;
-        public function encrypt(\Symfony\Component\Mime\Message $message): \Symfony\Component\Mime\Message;
-    }
-    /**
-    * @author Sebastiaan Stok <s.stok@rollerscapes.net>
-    * @generated
-    */
-    final class SMimeSigner extends \Symfony\Component\Mime\Crypto\SMime {
-        /**
-        * @param string $certificate The path of the file containing the signing certificate (in PEM format)
-        * @param string $privateKey The path of the file containing the private key (in PEM format)
-        * @param ?string $privateKeyPassphrase A passphrase of the private key (if any)
-        * @param ?string $extraCerts The path of the file containing intermediate certificates (in PEM format) needed by the signing certificate
-        * @param ?int $signOptions Bitwise operator options for openssl_pkcs7_sign() (@see https://secure.php.net/manual/en/openssl.pkcs7.flags.php)
-        * @generated
-        */
-        public function __construct(string $certificate, string $privateKey, ?string $privateKeyPassphrase = null, ?string $extraCerts = null, ?int $signOptions = null): void;
-        public function sign(\Symfony\Component\Mime\Message $message): \Symfony\Component\Mime\Message;
-    }
 }
 namespace Symfony\Component\Mime\DependencyInjection {
-    /**
-    * Registers custom mime types guessers.
-    *
-    * @author Fabien Potencier <fabien@symfony.com>
-    * @generated
-    */
-    class AddMimeTypeGuesserPass implements \Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface {
-        public function process(\Symfony\Component\DependencyInjection\ContainerBuilder $container): void;
-    }
 }
 namespace Symfony\Component\Mime\Encoder {
     /**
@@ -749,7 +711,7 @@ namespace Symfony\Component\Mime\Exception {
     * @author Fabien Potencier <fabien@symfony.com>
     * @generated
     */
-    class RfcComplianceException extends \InvalidArgumentException implements \Symfony\Component\Mime\Exception\ExceptionInterface {
+    class RfcComplianceException extends \Symfony\Component\Mime\Exception\InvalidArgumentException implements \Symfony\Component\Mime\Exception\ExceptionInterface {
     }
     /**
     * @author Fabien Potencier <fabien@symfony.com>
@@ -1238,7 +1200,7 @@ namespace Symfony\Component\Mime\HtmlToTextConverter {
     * @generated
     */
     class LeagueHtmlToMarkdownConverter implements \Symfony\Component\Mime\HtmlToTextConverter\HtmlToTextConverterInterface {
-        public function __construct(\League\HTMLToMarkdown\HtmlConverterInterface $converter): void;
+        public function __construct(\League\HTMLToMarkdown\HtmlConverterInterface $converter = null): void;
         public function convert(string $html, string $charset): string;
     }
 }
@@ -1308,16 +1270,6 @@ namespace Symfony\Component\Mime\Part {
         public function getContentType(): string;
         public function __serialize(): array;
         public function __unserialize(array $data): void;
-        /**
-        * @deprecated since Symfony 7.4, will be replaced by `__serialize()` in 8.0
-        * @generated
-        */
-        deprecated public function __sleep(): array;
-        /**
-        * @deprecated since Symfony 7.4, will be replaced by `__unserialize()` in 8.0
-        * @generated
-        */
-        deprecated public function __wakeup(): void;
     }
     /**
     * @author Fabien Potencier <fabien@symfony.com>
@@ -1358,16 +1310,6 @@ namespace Symfony\Component\Mime\Part {
         public function getPreparedHeaders(): \Symfony\Component\Mime\Header\Headers;
         public function __serialize(): array;
         public function __unserialize(array $data): void;
-        /**
-        * @deprecated since Symfony 7.4, will be replaced by `__serialize()` in 8.0
-        * @generated
-        */
-        deprecated public function __sleep(): array;
-        /**
-        * @deprecated since Symfony 7.4, will be replaced by `__unserialize()` in 8.0
-        * @generated
-        */
-        deprecated public function __wakeup(): void;
     }
     /**
     * @author Fabien Potencier <fabien@symfony.com>
@@ -1413,16 +1355,6 @@ namespace Symfony\Component\Mime\Part {
         public static function addEncoder(\Symfony\Component\Mime\Encoder\ContentEncoderInterface $encoder): void;
         public function __serialize(): array;
         public function __unserialize(array $data): void;
-        /**
-        * @deprecated since Symfony 7.4, will be replaced by `__serialize()` in 8.0
-        * @generated
-        */
-        deprecated public function __sleep(): array;
-        /**
-        * @deprecated since Symfony 7.4, will be replaced by `__unserialize()` in 8.0
-        * @generated
-        */
-        deprecated public function __wakeup(): void;
     }
 }
 namespace Symfony\Component\Mime\Part\Multipart {
@@ -1471,5 +1403,97 @@ namespace Symfony\Component\Mime\Part\Multipart {
         public function __construct(\Symfony\Component\Mime\Part\AbstractPart $mainPart, \Symfony\Component\Mime\Part\AbstractPart $part, \Symfony\Component\Mime\Part\AbstractPart ...$parts): void;
         public function getParts(): array;
         public function getMediaSubtype(): string;
+    }
+}
+namespace Symfony\Component\Mime\Test\Constraint {
+    final class EmailAddressContains extends \PHPUnit\Framework\Constraint\Constraint {
+        public function __construct(string $headerName, string $expectedValue): void;
+        public function toString(): string;
+        /**
+        * @param \Symfony\Component\Mime\RawMessage $message
+        * @generated
+        */
+        protected function matches(\Symfony\Component\Mime\RawMessage $message): bool;
+        /**
+        * @param \Symfony\Component\Mime\RawMessage $message
+        * @generated
+        */
+        protected function failureDescription(\Symfony\Component\Mime\RawMessage $message): string;
+    }
+    final class EmailAttachmentCount extends \PHPUnit\Framework\Constraint\Constraint {
+        public function __construct(int $expectedValue): void;
+        public function toString(): string;
+        /**
+        * @param \Symfony\Component\Mime\RawMessage $message
+        * @generated
+        */
+        protected function matches(\Symfony\Component\Mime\RawMessage $message): bool;
+        /**
+        * @param \Symfony\Component\Mime\RawMessage $message
+        * @generated
+        */
+        protected function failureDescription(\Symfony\Component\Mime\RawMessage $message): string;
+    }
+    final class EmailHasHeader extends \PHPUnit\Framework\Constraint\Constraint {
+        public function __construct(string $headerName): void;
+        public function toString(): string;
+        /**
+        * @param \Symfony\Component\Mime\RawMessage $message
+        * @generated
+        */
+        protected function matches(\Symfony\Component\Mime\RawMessage $message): bool;
+        /**
+        * @param \Symfony\Component\Mime\RawMessage $message
+        * @generated
+        */
+        protected function failureDescription(\Symfony\Component\Mime\RawMessage $message): string;
+    }
+    final class EmailHeaderSame extends \PHPUnit\Framework\Constraint\Constraint {
+        public function __construct(string $headerName, string $expectedValue): void;
+        public function toString(): string;
+        /**
+        * @param \Symfony\Component\Mime\RawMessage $message
+        * @generated
+        */
+        protected function matches(\Symfony\Component\Mime\RawMessage $message): bool;
+        /**
+        * @param \Symfony\Component\Mime\RawMessage $message
+        * @generated
+        */
+        protected function failureDescription(\Symfony\Component\Mime\RawMessage $message): string;
+    }
+    final class EmailHtmlBodyContains extends \PHPUnit\Framework\Constraint\Constraint {
+        public function __construct(string $expectedText): void;
+        public function toString(): string;
+        /**
+        * @param \Symfony\Component\Mime\RawMessage $message
+        * @generated
+        */
+        protected function matches(\Symfony\Component\Mime\RawMessage $message): bool;
+        /**
+        * @param \Symfony\Component\Mime\RawMessage $message
+        * @generated
+        */
+        protected function failureDescription(\Symfony\Component\Mime\RawMessage $message): string;
+    }
+    final class EmailSubjectContains extends \PHPUnit\Framework\Constraint\Constraint {
+        public function __construct(string $expectedSubjectValue): void;
+        public function toString(): string;
+        protected function matches(mixed $other): bool;
+        protected function failureDescription(mixed $other): string;
+    }
+    final class EmailTextBodyContains extends \PHPUnit\Framework\Constraint\Constraint {
+        public function __construct(string $expectedText): void;
+        public function toString(): string;
+        /**
+        * @param \Symfony\Component\Mime\RawMessage $message
+        * @generated
+        */
+        protected function matches(\Symfony\Component\Mime\RawMessage $message): bool;
+        /**
+        * @param \Symfony\Component\Mime\RawMessage $message
+        * @generated
+        */
+        protected function failureDescription(\Symfony\Component\Mime\RawMessage $message): string;
     }
 }
